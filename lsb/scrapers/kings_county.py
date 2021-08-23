@@ -10,8 +10,8 @@ from bs4 import BeautifulSoup
 from selenium.common.exceptions import NoSuchElementException
 
 
-if __name__ == "__main__":
-    os.chdir('/Users/rondellking/PycharmProjects/Rbot/rbot')
+def king_county():
+    os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
     import drivers
     import helper
     from send_email import send_mail
@@ -95,3 +95,8 @@ if __name__ == "__main__":
         logging.info(f'No Results found for {today_str}')
         print(f'No Results found for {today_str}')
     driver.close()
+
+
+if __name__ == "__main__":
+    os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
+    king_county()

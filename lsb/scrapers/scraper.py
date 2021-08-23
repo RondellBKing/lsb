@@ -8,19 +8,25 @@ class Scraper (object):
         self.start_date = start_date
         self.end_date = end_date
         self.results = []
+        self.table = []
         self.error = ""
+        self.html = ""
+
+    def run(self):
+        self.scrape()
+        self.parse_table()
+        self.upload_data_and_alert()
 
     def scrape(self):
         print(self.start_date)
         print(self.end_date)
-        self.results = 'results'
+        self.html = 'results'
 
-    def write_results(self):
+    def parse_table(self):
         pass
-        # Google Sheets for now - > https://developers.google.com/sheets/api/quickstart/python
-        # gc = pygsheets.authorize(client_secret='/Users/mitchellhall/programming/pyprojects/taxlaw/taxlaw/credentials.json')
-        # sh = gc.open('Lien Lead Generation')
-        # wks = sh.worksheet_by_title('Sheet1')
-        # wks.clear()
-        # wks.update_values(crange='A1', values=self.results)
-        # print(self.results)
+
+    def upload_data_and_alert(self):
+        pass
+        # Check google drive and compare feeds
+        # Write to google drive if any updates
+        # Send Email

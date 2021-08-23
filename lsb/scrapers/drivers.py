@@ -4,7 +4,7 @@ import os
 
 def g_drive(file_location, drive_folder_id):
 
-    os.chdir('/Users/rondellking/PycharmProjects/Rbot/rbot')
+    os.chdir('/Users/rondellking/PycharmProjects')
     # Connect to google drive and upload csv.
     from pydrive.auth import GoogleAuth
     from pydrive.drive import GoogleDrive

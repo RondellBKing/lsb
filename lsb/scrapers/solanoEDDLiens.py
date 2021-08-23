@@ -106,7 +106,7 @@ def getSolanoEDDLiens():
     return lead_list
 
 
-
 if __name__ == '__main__':
+    os.chdir('/Users/rondellking/PycharmProjects/Rbot/rbot')
     getSolanoEDDLiens()
 
