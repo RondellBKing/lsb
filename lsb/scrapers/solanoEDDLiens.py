@@ -5,10 +5,6 @@ import drivers
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-# from datetime import date
-# from datetime import timedelta
-# import helper
-# from send_email import send_mail
 from scraper import Scraper
 
 
@@ -82,4 +78,4 @@ class Solano(Scraper):
 
 if __name__ == '__main__':
     os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
-    Solano(delta=20).run(send_mail=True)
+    Solano(delta=5).run(send_mail=False)

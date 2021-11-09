@@ -95,6 +95,7 @@ class Scraper(ABC):
                 send_mail(self.email_recipients, subject, email_message)
         else:
             logging.info('Feed is the same as previous, ending without sending to drive')
+            print("New Results not found")
 
     def feed_setup(self):
         day_delta = timedelta(days=self.delta)

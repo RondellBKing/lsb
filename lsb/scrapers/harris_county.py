@@ -25,7 +25,8 @@ class HarrisCounty(Scraper):
         # Testing Move to own file
         driver = drivers.create_driver('https://www.cclerk.hctx.net/applications/websearch/RP.aspx')
 
-        # Fill out dates
+        # Fill out dates instrument and click:w
+
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "ctl00$ContentPlaceHolder1$txtInstrument"))).send_keys('T/L')
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "ctl00$ContentPlaceHolder1$txtFrom"))).send_keys(self.end_date)
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "ctl00$ContentPlaceHolder1$txtTo"))).send_keys(self.start_date)
