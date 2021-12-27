@@ -8,42 +8,32 @@ from selenium.webdriver.support.ui import WebDriverWait
 from scraper import Scraper
 
 
-class Solano(Scraper):
+class SanFran(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "solano"
+        self.county_name = "san_francisco"
 
     def scrape(self):
-        browser = drivers.create_driver('http://recorderonline.solanocounty.com')
+        browser = drivers.create_driver('https://recorder.sfgov.org/#!/simple')
 
-        time.sleep(1)
+        # Click Advanced Search
+        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="x_box_outer"]/div[2]/div/div[2]/input'))).click()
 
-        # Hit Agree
-        browser.find_element_by_id('ctl00_m_g_c6431b47_3ecb_4f66_9e13_f949e2ea5ca6_ctl00_btnAgree').click()
-        time.sleep(1)
-
-        # Show advanced search options
-        browser.find_element_by_id('ctl00_m_g_53ad86ef_2077_49cd_915b_11a033357719_ctl00_btnShowAdvanced').click()
-        time.sleep(1)
+        # Drop down for Type selection
+        button = browser.find_element_by_xpath('//*[@id="spanDisplayFC"]')
+        browser.execute_script("arguments[0].click();", button)
+        WebDriverWait(browser, 30).until(EC.element_to_be_clickable((
+                                        By.XPATH, '//*[@id="ddlFilingCode"]/ul/li[11]'))).click()
 
         # Enter Start Date
         WebDriverWait(browser, 10).until(
-            EC.element_to_be_clickable((By.ID, "ctl00_m_g_53ad86ef_2077_49cd_915b_11a033357719_ctl00_txtDocumentDateFrom"))).clear()
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="datepicker-my"]'))).clear()
+
         WebDriverWait(browser, 10).until(
-            EC.element_to_be_clickable((By.ID, "ctl00_m_g_53ad86ef_2077_49cd_915b_11a033357719_ctl00_txtDocumentDateFrom"))).send_keys(self.end_date)
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="datepicker-my"]'))).send_keys(self.end_date)
 
-        browser.find_element_by_css_selector('#dk_container_ctl00_m_g_53ad86ef_2077_49cd_915b_11a033357719_ctl00_'
-                                             'drpFilingCode > a > span.dk_label').click()
-        time.sleep(1)
-
-        # lien - Federal tax lien
-        browser.find_element_by_xpath('//*[@id="dk_container_ctl00_m_g_53ad86ef_2077_'
-                                      '49cd_915b_11a033357719_ctl00_drpFilingCode"]'
-                                      '/div[1]/ul/li[723]/a').click()
-        time.sleep(1)
-
-        browser.find_element_by_css_selector('#ctl00_m_g_53ad86ef_2077_49cd_915b_11a033357719_ctl00_btnAdvancedSearch').click()
-        time.sleep(1)
+        browser.find_elements_by_id("btnSearch")[1].click()
+        # WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.ID, 'btnSearch'))).click()
 
         # per page drop down
         try:  # Todo fix drop down click
@@ -78,4 +68,4 @@ class Solano(Scraper):
 
 if __name__ == '__main__':
     os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
-    Solano(delta=5).run(send_mail=True)
+    SanFran(delta=30).run(send_mail=False)
