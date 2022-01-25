@@ -127,9 +127,8 @@ class Scraper(ABC):
         print(self.end_date)
         self.tbl_html = 'results'
 
-    @staticmethod
     @abstractmethod
-    def parse_table(tbl_html):
+    def parse_table(self, tbl_html):
         """
         Parse html table and extract pertinent lead data
         :return:
