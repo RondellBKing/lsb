@@ -70,4 +70,4 @@ class SanFran(Scraper):
 
 if __name__ == '__main__':
     os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
-    SanFran(delta=5).run(send_mail=False)
+    SanFran(delta=5).run(send_mail=True)
