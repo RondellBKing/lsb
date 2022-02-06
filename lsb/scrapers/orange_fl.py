@@ -10,10 +10,10 @@ from selenium.webdriver.support.ui import Select
 from scraper import Scraper
 
 
-class SanFran(Scraper):
+class OrangeFL(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "orange"
+        self.county_name = "orange_fl"
 
     def scrape(self):
         browser = drivers.create_driver('https://or.occompt.com/recorder/eagleweb/docSearch.jsp')
@@ -58,7 +58,7 @@ class SanFran(Scraper):
         tbl = tbl_html[0][['Description','Summary']]
         leads_df = tbl[tbl['Summary'].str.startswith('Grantee')]
         leads_df = leads_df['Summary'].str.split("Grantee:", n = 1, expand = True)[[1]]
-        leads_df['Date'] = self.start_date
+        leads_df['Date'] = '-' #self.start_date
         leads_df['Type'] = 'LSB'
         leads_df['State'] = 'FL'
         leads_df['City'] = 'Orange'
@@ -70,4 +70,4 @@ class SanFran(Scraper):
 
 if __name__ == '__main__':
     os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
-    SanFran(delta=5).run(send_mail=True)
+    OrangeFL(delta=5).run(send_mail=True)

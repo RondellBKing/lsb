@@ -131,6 +131,8 @@ dmypy.json
 # LSB Specific
 lsb/temp/
 lsb/scrapers/client_secrets.json
+lsb/scrapers/credentials.json
+
 .idea/.gitignore
 .idea/lsb.iml
 .idea/misc.xml
@@ -139,4 +141,3 @@ lsb/scrapers/client_secrets.json
 .idea/workspace.xml
 .idea/dictionaries/rondellking.xml
 .idea/inspectionProfiles/profiles_settings.xml
-lsb/scrapers/credentials.json

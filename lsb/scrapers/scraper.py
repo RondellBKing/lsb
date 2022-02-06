@@ -11,9 +11,7 @@ from dateutil.parser import parse
 import pandas as pd
 import tempfile
 
-
 from send_email import send_mail
-from helper import remove_old_lead_files
 import drivers
 
 # logging.basicConfig(filename='scraper.log', level=logging.INFO)
@@ -55,30 +53,6 @@ class Scraper(ABC):
         else:
             logging.info(f'No Results found for {self.start_date}')
             print(f'No Results found for {self.start_date}')
-    
-    def duplicate_feed(self, leads_df):
-        """
-        Compare latest existing feed, only create a new one if there are differences.
-        This function also cleans and removes old files as long as there at least  3 feeds.
-        Returns: bool
-        """
-        
-        list_of_files = glob.glob(f'{self.temp_dir}/{self.county_name}*')
-        if list_of_files:
-            latest_file = max(list_of_files, key=os.path.getmtime)
-            logging.info(f'Latest feed found {latest_file}')
-
-            # Create Dataframe from the previous lead source and the new
-            latest_data_feed_df = pd.read_csv(latest_file, index_col=False)
-            new_lead_count = len(leads_df)
-            prev_lead_count = len(latest_data_feed_df)
-
-            logging.info(f'Found {new_lead_count} in latest pull compared to {prev_lead_count} in previous feed')
-            remove_old_lead_files(list_of_files)
-        else:
-            return False  # There are no previous feeds present
-
-        return leads_df.equals(latest_data_feed_df)
 
     def upload_data_and_alert(self):
         """
@@ -89,11 +63,25 @@ class Scraper(ABC):
         :return:
         """
 
-        leads_df = pd.DataFrame(self.lead_list, columns=self.header)
-        leads_df.drop_duplicates(inplace=True)
-        new_lead_count = len(leads_df)
+        # Compare latest existing feed, only create a new one if there are differences.
+        list_of_files = glob.glob(f'{self.temp_dir}/{self.county_name}*')
+        if list_of_files:
+            latest_file = max(list_of_files, key=os.path.getmtime)
+            logging.info(f'Latest feed found {latest_file}')
 
-        if self.duplicate_feed(leads_df) is False:
+            # Create Dataframe from the previous lead source and the new
+            latest_data_feed_df = pd.read_csv(latest_file, index_col=False)
+        else:
+            latest_data_feed_df = pd.DataFrame()
+
+        leads_df = pd.DataFrame(self.lead_list, columns=self.header)
+
+        new_lead_count = len(leads_df)
+        prev_lead_count = len(latest_data_feed_df)
+
+        logging.info(f'Found {new_lead_count} in latest pull compared to {prev_lead_count} in previous feed')
+
+        if not leads_df.equals(latest_data_feed_df):
 
             logging.info(f"Creating new feed {self.filename}")
             leads_df.to_csv(self.filename, index=False)
