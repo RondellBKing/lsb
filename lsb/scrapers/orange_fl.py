@@ -48,9 +48,7 @@ class OrangeFL(Scraper):
             print('No Results found')
             tbl_html_pd = None
 
-        # tbl_html = BeautifulSoup(html, 'html.parser').select('tbody > tr')  # select only the search results
-        # tbl_html = BeautifulSoup(html, 'html.parser').find('table', id="searchResultsTable")
-        # browser.close()
+        browser.close()
 
         return tbl_html_pd
 
