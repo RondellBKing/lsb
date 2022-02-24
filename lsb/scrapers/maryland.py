@@ -32,13 +32,14 @@ class Maryland(Scraper):
 
         soup = BeautifulSoup(browser.page_source, 'html.parser')
 
+        # Click pages to fetch additional results
         tbl_paginator = soup.find('table', attrs = {'class': 'paginator'})
-        pagination = tbl_paginator.find_all('td')
-
+        pagination = tbl_paginator.find_all('td') if tbl_paginator else ['dummy'] # If single page of results
         x=1
         tables = []
+
         for i in pagination:
-            if x > 1:
+            if x > 1: # Only need to click NEXT after the first page is stored
                 WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, f'//*[@id="j_idt8:scrollidx{x}"]'))).click()
                 soup = BeautifulSoup(browser.page_source, 'html.parser')
 
@@ -49,7 +50,7 @@ class Maryland(Scraper):
 
         browser.close()
 
-        return tables
+        return tables # List of tables for Maryland 
 
     def parse_table(self, tbl_html):
 

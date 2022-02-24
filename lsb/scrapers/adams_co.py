@@ -12,10 +12,10 @@ import drivers
 from scraper import Scraper  # Base class implementation
 
 
-class KingCounty(Scraper):
+class AdamsCounty(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "king_county"
+        self.county_name = "adams"
 
     def scrape(self):
         # Options used to attempt to scrape site with element not interactable exception
@@ -23,27 +23,27 @@ class KingCounty(Scraper):
         options.add_argument("start-maximized")
         options.add_argument("--disable-extensions")
 
-        page_url = 'https://recordsearch.kingcounty.gov/LandmarkWeb/search/index?theme=.blue&section=searchCriteriaLegal&quickSearchSelection='
+        page_url = 'http://recording.adcogov.org/LandmarkWeb/Home/Index'
         driver = drivers.create_driver(page_url, options)
 
-        # Fill out dates
+        # Automate selections
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="topNavLinksSearch"]/a'))).click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idAcceptYes"]'))).click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="searchCriteriaDocuments-tab"]'))).click()
 
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "searchCriteriaDocuments-tab"))).click()
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "searchCriteriaDocuments-tab"))).click()
-        # WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "beginDate - DocumentType"))).send_keys('10/10/2021')
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "documentType-DocumentType"))).send_keys('FTL')
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "beginYesterday-DocumentType"))).click()
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "submit-DocumentType"))).click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="documentType-DocumentType"]'))).send_keys('TXLN')
+        # Select option for last 7 days
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="lastNumOfDays-DocumentType"]/option[2]'))).click()
+        
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="submit-DocumentType"]'))).click() # Submit
 
-        time.sleep(10)
-        html = driver.page_source
-        ''' Make Above Separate Function'''
+        time.sleep(5)
 
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
         main_table = soup.find('table', id="resultsTable")
 
         driver.close()
-        
+
         return main_table
 
     def parse_table(self, tbl_html):
@@ -60,9 +60,13 @@ class KingCounty(Scraper):
                 count += 1
                 continue
             try:
-                lead = row.findChildren(['td'])[5].text
+                lead_cell = row.findChildren(['td'])[5]
+                name = lead_cell.contents[0]
+                address = lead_cell.contents[2]
+                lead = f"{name}|{address}"
+
                 lien_date = row.findChildren(['td'])[7].text
-                lead_list.append([lien_date, lead, 'LSB', 'WA', 'King'])
+                lead_list.append([lien_date, lead, 'LSB', 'CO', self.county_name])
             except IndexError:  # Skip empty rows
                 pass
 
@@ -71,4 +75,4 @@ class KingCounty(Scraper):
 
 if __name__ == "__main__":
     os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
-    KingCounty(delta=0).run(send_mail=True)
+    AdamsCounty(delta=0).run(send_mail=True) # Uses last 7 day button

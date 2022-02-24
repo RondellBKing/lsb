@@ -1,0 +1,28 @@
+30 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/solanoEDDLiens.py >> /tmp/solano.log
+
+
+### 3 Times per day ###
+# San Fran
+35 23 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/san_fran.py >> /tmp/san_fran.log
+35 09 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/san_fran.py >> /tmp/san_fran.log
+35 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/san_fran.py >> /tmp/san_fran.log
+
+# Orange FL
+00 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python Users/rondellking/PycharmProjects/lsb/lsb/scrapers/orange_fl.py >> /tmp/orange_fl.log
+00 08 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/orange_fl.py >> /tmp/orange_fl.log
+00 12 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/orange_fl.py >> /tmp/orange_fl.log
+
+# Orange CA
+20 23 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/orange_ca.py >> /tmp/orange_ca.log
+20 09 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/orange_ca.py >> /tmp/orange_ca.log
+20 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/orange_ca.py >> /tmp/orange_ca.log
+
+# Maryland
+2 23 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/maryland.py >> /tmp/maryland.log
+2 09 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/maryland.py >> /tmp/maryland.log
+2 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/maryland.py >> /tmp/maryland.log
+
+# Hourly Jobs
+5 9-20 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/harris_county.py >> /tmp/harris.log
+10 9-20 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/king_county.py >> /tmp/king.log
+15 9-20 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/sacremento_county.py >> /tmp/sacremento.log
