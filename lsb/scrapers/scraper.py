@@ -5,10 +5,11 @@ import logging
 import os
 import glob
 import sys
-from datetime import date
-from datetime import timedelta
+from datetime import date, timedelta
 from dateutil.parser import parse
+
 import pandas as pd
+import numpy as np
 import tempfile
 
 from send_email import send_mail
@@ -80,6 +81,12 @@ class Scraper(ABC):
         prev_lead_count = len(latest_data_feed_df)
 
         logging.info(f'Found {new_lead_count} in latest pull compared to {prev_lead_count} in previous feed')
+        
+        # Protect against missing rows but a bit too brute force
+        # leads_df.replace('', np.nan, inplace=True)
+
+        # leads_df.dropna(inplace=True)
+        # latest_data_feed_df.dropna(inplace=True)
 
         if not leads_df.equals(latest_data_feed_df):
 
@@ -95,7 +102,7 @@ class Scraper(ABC):
                 send_mail(self.email_recipients, subject, email_message)
         else:
             logging.info('Feed is the same as previous, ending without sending to drive')
-            tday = date.today
+            tday = date.today()
             print(f"New Results not found - {tday}")
 
     def feed_setup(self):

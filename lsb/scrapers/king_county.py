@@ -62,7 +62,8 @@ class KingCounty(Scraper):
             try:
                 lead = row.findChildren(['td'])[5].text
                 lien_date = row.findChildren(['td'])[7].text
-                lead_list.append([lien_date, lead, 'LSB', 'WA', 'King'])
+                if lead:
+                    lead_list.append([lien_date, lead, 'LSB', 'WA', 'King'])
             except IndexError:  # Skip empty rows
                 pass
 

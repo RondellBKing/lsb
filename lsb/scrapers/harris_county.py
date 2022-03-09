@@ -2,7 +2,6 @@ import logging
 import time
 
 from bs4 import BeautifulSoup
-import os
 import drivers
 
 # Selenium packages used to simulate web experience
@@ -63,14 +62,17 @@ class HarrisCounty(Scraper):
                     if row_list:
                         lead = row_list[1].findChildren('span')[0].text
 
-                        if lead == 'INTERNAL REVENUE SERVICE':
-                            continue
+                        if lead:
+                            if lead == 'INTERNAL REVENUE SERVICE':
+                                continue
 
-                        lead_names.append(lead)
+                            lead_names.append(lead)
 
                 combined_lead_names = '|'.join(lead_names)
-                logging.debug(f'Found {combined_lead_names}')
-                lead_list.append([lien_date, combined_lead_names, 'LSB', 'TX', 'Harris'])
+
+                if combined_lead_names:
+                    logging.debug(f'Found {combined_lead_names}')
+                    lead_list.append([lien_date, combined_lead_names, 'LSB', 'TX', 'Harris'])
 
             except IndexError:  # Skip empty rows
                 logging.debug('Skipping empty row')
@@ -80,5 +82,4 @@ class HarrisCounty(Scraper):
 
 
 if __name__ == "__main__":
-
     HarrisCounty(delta=5).run(send_mail=True)

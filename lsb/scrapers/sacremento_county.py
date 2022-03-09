@@ -62,7 +62,9 @@ class Solano(Scraper):
 
                 # Strip out the (E) completely and trim the string of (R) if it exist
                 lead = row.findChildren(['td'])[3].text.split('(E)')[0].split('(R)')[-1].strip()
-                lead_list.append([lien_date, lead, 'LSB', 'CA', 'Sacramento'])
+
+                if lead:
+                    lead_list.append([lien_date, lead, 'LSB', 'CA', 'Sacramento'])
             except Exception:  # Skip empty rows
                 pass
         return lead_list
