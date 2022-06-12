@@ -9,7 +9,7 @@ from datetime import date, timedelta
 from dateutil.parser import parse
 
 import pandas as pd
-import numpy as np
+# import numpy as np
 import tempfile
 
 from send_email import send_mail
@@ -50,7 +50,11 @@ class Scraper(ABC):
 
         if self.tbl_html:
             self.lead_list = self.parse_table(self.tbl_html)
-            self.upload_data_and_alert()
+            if self.lead_list:
+                self.upload_data_and_alert()
+            else:
+                logging.info(f'No Results found for {self.start_date}')
+                print(f'No Results found for {self.start_date}')
         else:
             logging.info(f'No Results found for {self.start_date}')
             print(f'No Results found for {self.start_date}')
@@ -83,12 +87,17 @@ class Scraper(ABC):
         logging.info(f'Found {new_lead_count} in latest pull compared to {prev_lead_count} in previous feed')
         
         # Protect against missing rows but a bit too brute force
-        # leads_df.replace('', np.nan, inplace=True)
 
         # leads_df.dropna(inplace=True)
         # latest_data_feed_df.dropna(inplace=True)
 
-        if not leads_df.equals(latest_data_feed_df):
+        if not leads_df.equals(latest_data_feed_df): # New Feed
+            
+            # Identify Business Leads
+            # biz_key_words = pd.read_csv('Business Key Words.csv')
+            # biz_word_list = biz_key_words['Keyword'].tolist()
+            # pattern = '|'.join(biz_word_list)
+            # leads_df['IsBiz'] = leads_df.Taxpayer.str.contains(pattern, case=False)
 
             logging.info(f"Creating new feed {self.filename}")
             leads_df.to_csv(self.filename, index=False)
@@ -100,10 +109,27 @@ class Scraper(ABC):
                 logging.info('Sending email and uploading feed')
                 drivers.g_drive(self.filename, '1TrIpVdx9JCD_hungVPweQGfcDkJDB5dh')
                 send_mail(self.email_recipients, subject, email_message)
+            
+            # Load to mongo, only for select counties during beta
+            if self.county_name in ['king_county','harris_county']:
+                self.store_feed(leads_df)
+
         else:
             logging.info('Feed is the same as previous, ending without sending to drive')
             tday = date.today()
             print(f"New Results not found - {tday}")
+
+    def store_feed(self, lead_df):
+        client = drivers.create_mongo_connection()
+        db = client['scraped_leads']
+        collection = db[self.county_name]
+        lead_dict = lead_df.to_dict("records")
+        try:
+            logging.info("Loading data to mongo db")
+            collection.insert_many(lead_dict)
+            # collection.update_many({ "Taxpayer": { "$exists": True } },lead_dict, upsert=True)
+        except Exception as e:
+            logging.error(f'Failed to load to mongo {e}')
 
     def feed_setup(self):
         day_delta = timedelta(days=self.delta)

@@ -82,4 +82,4 @@ class HarrisCounty(Scraper):
 
 
 if __name__ == "__main__":
-    HarrisCounty(delta=5).run(send_mail=True)
+    HarrisCounty(delta=10).run(send_mail=True)

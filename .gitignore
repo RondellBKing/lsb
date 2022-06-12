@@ -141,3 +141,9 @@ lsb/scrapers/credentials.json
 .idea/workspace.xml
 .idea/dictionaries/rondellking.xml
 .idea/inspectionProfiles/profiles_settings.xml
+lsb/scrapers/credentials.json
+lsb/scrapers/test.csv
+lsb/scrapers/token.pickle
+lsb/scrapers/settings.yaml
+lsb/X509-cert-7132846088829326577.pem
+token.pickle

@@ -1,3 +1,4 @@
+# Once per day #
 30 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/solanoEDDLiens.py >> /tmp/solano.log
 
 
@@ -18,9 +19,24 @@
 20 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/orange_ca.py >> /tmp/orange_ca.log
 
 # Maryland
-2 23 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/maryland.py >> /tmp/maryland.log
-2 09 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/maryland.py >> /tmp/maryland.log
-2 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/maryland.py >> /tmp/maryland.log
+2 20 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/maryland.py >> /tmp/maryland.log
+2 08 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/maryland.py >> /tmp/maryland.log
+2 12 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/maryland.py >> /tmp/maryland.log
+
+# Adams
+50 23 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/adams_co.py >> /tmp/adams_co.log
+50 09 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/adams_co.py >> /tmp/adams_co.log
+50 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/adams_co.py >> /tmp/adams_co.log
+
+# Don Ana 
+10 23 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/don_ana.py >> /tmp/don_ana.log
+10 09 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/don_ana.py >> /tmp/don_ana.log
+10 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/don_ana.py >> /tmp/don_ana.log
+
+# Webb County Tx
+15 23 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/webb_tx.py >> /tmp/webb_tx.log
+15 09 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/webb_tx.py >> /tmp/webb_tx.log
+15 16 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/webb_tx.py >> /tmp/webb_tx.log
 
 # Hourly Jobs
 5 9-20 * * 1-5 /Users/rondellking/.conda/envs/Rbot/bin/python /Users/rondellking/PycharmProjects/lsb/lsb/scrapers/harris_county.py >> /tmp/harris.log

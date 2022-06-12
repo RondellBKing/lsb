@@ -10,26 +10,23 @@ from selenium.webdriver.support.ui import Select
 from scraper import Scraper
 
 
-class DonAna(Scraper):
+class FranklinOh(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "don_ana"
+        self.county_name = "franklin"
 
     def scrape(self):
-        browser = drivers.create_driver('http://records.donaanacounty.org/countyweb/loginDisplay.action?countyname=DonaAna') # By Pass document type search
+        browser = drivers.create_driver('https://countyfusion5.kofiletech.us/countyweb/loginDisplay.action?countyname=Franklin') 
         
-        # Click Search Public Records
-        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="maindiv"]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td/input'))).click()
-        time.sleep(5)
-        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="menudiv"]/table/tbody/tr/td[1]/table/tbody/tr/td[5]/a'))).click()
-
+        # Click Input Button
+        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="maindiv"]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td/input'))).click()
+        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="dialogheader"]/table/tbody/tr/td[2]/a/img'))).click() #Close pop-up
+        
         browser.switch_to.frame(browser.find_element_by_xpath('//*[@id="corediv"]/iframe')) # Parent Frame
         browser.switch_to.frame(browser.find_element_by_xpath('//*[@id="dynSearchFrame"]')) # Frame that holds side selections
-        
-        # Click Federal Tax Lien
-        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="_easyui_tree_13"]/span[4]/b'))).click()
-        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="_easyui_tree_19"]/span[2]'))).click()
-        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="_easyui_tree_26"]/span[6]'))).click()
+
+        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="_easyui_tree_17"]/span[4]'))).click() # All document Types
+        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="_easyui_tree_21"]'))).click() # Federal Tax Lien
 
         # Enter Dates
         browser.switch_to.frame(browser.find_element_by_xpath('//*[@id="criteriaframe"]'))
@@ -39,7 +36,8 @@ class DonAna(Scraper):
         browser.switch_to.parent_frame()
 
         # Click Search Button
-        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="imgSearch"]'))).click()
+        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="imgSearch"]'))).click()
+
         browser.switch_to.default_content()
         browser.switch_to.frame(browser.find_element_by_name('bodyframe'))
         browser.switch_to.frame(browser.find_element_by_name('resultFrame'))
@@ -73,4 +71,4 @@ class DonAna(Scraper):
 
 if __name__ == '__main__':
     os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
-    DonAna(delta=20).run(send_mail=True)
+    FranklinOh(delta=10).run(send_mail=True)
