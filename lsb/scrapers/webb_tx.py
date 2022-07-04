@@ -22,11 +22,13 @@ class WebbTx(Scraper):
         # Click Input Button
         WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="maindiv"]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td/input'))).click()
         browser.switch_to.frame(browser.find_element_by_xpath('//*[@id="corediv"]/iframe')) # Parent frame on popup screen
-        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="accept"]'))).click() #Close pop-up
-        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="dialogheader"]/table/tbody/tr/td[2]/a/img'))).click()
+        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="accept"]'))).click() # Hit accept
+        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="dialogheader"]/table/tbody/tr/td[2]/a/img'))).click() # Close Popup
         
         time.sleep(5)
-        browser.switch_to.frame(browser.find_element_by_xpath('//*[@id="corediv"]/iframe')) # Parent Frame
+
+        #Todo need this twice?
+        browser.switch_to.frame(browser.find_element_by_xpath('//*[@id="corediv"]/iframe')) # Parent Frame 
 
         WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="datagrid-row-r1-2-0"]/td/div'))).click() # Click Search Records
         
@@ -84,4 +86,4 @@ class WebbTx(Scraper):
 
 if __name__ == '__main__':
     os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
-    WebbTx(delta=10).run(send_mail=True)
+    WebbTx(delta=5).run(send_mail=True)

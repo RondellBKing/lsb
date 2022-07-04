@@ -13,7 +13,7 @@ from scraper import Scraper
 class FranklinOh(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "franklin"
+        self.county_name = "franklin_oh"
 
     def scrape(self):
         browser = drivers.create_driver('https://countyfusion5.kofiletech.us/countyweb/loginDisplay.action?countyname=Franklin') 
@@ -23,6 +23,7 @@ class FranklinOh(Scraper):
         WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="dialogheader"]/table/tbody/tr/td[2]/a/img'))).click() #Close pop-up
         
         browser.switch_to.frame(browser.find_element_by_xpath('//*[@id="corediv"]/iframe')) # Parent Frame
+        time.sleep(2)
         browser.switch_to.frame(browser.find_element_by_xpath('//*[@id="dynSearchFrame"]')) # Frame that holds side selections
 
         WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="_easyui_tree_17"]/span[4]'))).click() # All document Types
@@ -44,10 +45,8 @@ class FranklinOh(Scraper):
         browser.switch_to.frame(browser.find_element_by_name('resultListFrame'))
         html = BeautifulSoup(browser.page_source, 'html.parser')
         
-
         tbl_html = html.find('table', {'class': 'datagrid-btable'})
-        # table = bs.find(lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id']=="Table1") 
-        # rows = table.findAll(lambda tag: tag.name=='tr')
+
         browser.close()
 
         return tbl_html # List of tables for Maryland 
@@ -58,11 +57,10 @@ class FranklinOh(Scraper):
 
         for row in rows:
             try:
-                lead = row.findChildren(['td'])[5].getText()
-                if lead != '2':
-                    lien_date = row.findChildren(['td'])[7].getText()
-                    lead_list.append([lien_date, lead, 'LSB', 'NM', self.county_name])
-
+                lead = row.findChildren(['td'])[6].getText().strip()
+                if lead != 'E':
+                    lien_date = row.findChildren(['td'])[10].getText().strip()
+                    lead_list.append([lien_date, lead, 'LSB', 'OH', self.county_name])
             except IndexError:  # Skip empty rows
                 pass
 
@@ -71,4 +69,4 @@ class FranklinOh(Scraper):
 
 if __name__ == '__main__':
     os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
-    FranklinOh(delta=10).run(send_mail=True)
+    FranklinOh(delta=5).run(send_mail=True)

@@ -1,0 +1,14 @@
+from pymongo import MongoClient
+from abc import ABC
+
+uri = "mongodb+srv://lsb.lkcja.mongodb.net/myFirstDatabase?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority"
+client = MongoClient(uri,
+                     tls=True,
+                     tlsCertificateKeyFile='/Users/rondellking/PycharmProjects/lsb/lsb/X509-cert-7132846088829326577.pem')
+
+db = client['scraped_leads']
+collection = db['king_county']
+# doc_count = collection.count_documents({})
+collection.find_one({'DocKey': 'BLESSEDLIMOUSINEINC_WA_King_4252022'} )
+
+
