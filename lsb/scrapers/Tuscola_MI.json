@@ -1,0 +1,19 @@
+{"Tuscola_MI":
+    [
+        {"XPATH": "//*[@id=\"maindiv\"]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td/input","ACTION":"Click", "COMMENTS": "Click Login as Guest"},
+
+        {"ACTION": "Iframe","XPATH":"//*[@id=\"corediv\"]/iframe", "COMMENTS": "hidden iframe click"},
+        {"XPATH": "//*[@id=\"datagrid-row-r1-2-0\"]/td/div","ACTION":"Click", "COMMENTS": "Search Public Records"},
+        
+        {"ACTION": "Iframe","XPATH":"//*[@id=\"dynSearchFrame\"]", "COMMENTS": "hidden iframe click"},
+        {"XPATH": "//*[@id=\"_easyui_tree_12\"]/span[3]","ACTION":"Click", "COMMENTS": "Uncheck All Document Types"},
+        {"XPATH": "//*[@id=\"_easyui_tree_19\"]/span[2]","ACTION":"Click", "COMMENTS": "Mortgages drop down"},
+        {"XPATH": "//*[@id=\"_easyui_tree_24\"]/span[5]","ACTION":"Click", "COMMENTS": "Check Federal Tax Lien"},
+        
+        {"ACTION": "Iframe","XPATH":"//*[@id=\"criteriaframe\"]", "COMMENTS": "hidden iframe click"},
+        {"ACTION": "Input","TEXT":"END_DATE", "XPATH":"//*[@id=\"elemDateRange\"]/table/tbody/tr/td[2]/table/tbody/tr/td[1]/span/input[1]", "COMMENTS": "Start Date"},
+        {"ACTION": "Input","TEXT":"ST_DATE","XPATH":"//*[@id=\"elemDateRange\"]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/span/input[1]", "COMMENTS": "End Date"},
+        {"ACTION": "ParentIframe"},
+        {"XPATH": "//*[@id=\"imgSearch\"]", "ACTION":"Click", "COMMENTS": "Click Search Button"}
+    ]
+}

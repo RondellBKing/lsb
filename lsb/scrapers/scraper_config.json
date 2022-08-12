@@ -1,0 +1,16 @@
+{"webb_tx":
+    [
+        {"XPATH": "//*[@id=\"maindiv\"]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td/input","ACTION":"Click", "COMMENTS": "Click Login"},
+        {"ACTION": "Iframe","XPATH":"//*[@id=\"corediv\"]/iframe", "COMMENTS": "hidden iframe click"},
+        {"XPATH": "//*[@id=\"accept\"]","ACTION":"Click", "COMMENTS": "Accept Button"},
+        
+        {"ACTION": "Iframe","XPATH":"//*[@id=\"corediv\"]/iframe", "COMMENTS": "hidden iframe click"},
+        {"XPATH": "//*[@id=\"dialogheader\"]/table/tbody/tr/td[2]/a/img","ACTION":"Click", "COMMENTS": "Close popup"},
+        
+        {"ACTION": "Iframe","XPATH":"//*[@id=\"criteriaframe\"]", "COMMENTS": "hidden iframe click"},
+        {"ACTION": "Input","TEXT":"ST_DATE","XPATH":"//*[@id=\"elemDateRange\"]/table/tbody/tr/td[2]/table/tbody/tr/td[1]/span/input[1]", "COMMENTS": "Start Date"},
+        {"ACTION": "Input","TEXT":"END_DATE","XPATH":"//*[@id=\"elemDateRange\"]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/span/input[1]", "COMMENTS": "End Date"},
+        
+        {"XPATH": "//*[@id=\"imgSearch\"]", "ACTION":"Click", "COMMENTS": "Click Search Button"}
+    ]
+}

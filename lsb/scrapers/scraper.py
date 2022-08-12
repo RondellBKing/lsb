@@ -34,7 +34,7 @@ class Scraper(ABC):
         self.filename = ""
         self.county_name = ""
         self.send_mail = ""
-        self.email_recipients = "ddrummond@blueprint-tax.com"
+        self.email_recipients = "ddrummond@blueprint-tax.com, jjereb@blueprint-tax.com"
         # self.email_recipients = "kingstack08@gmail.com"
         self.header = ['LienDate', 'Taxpayer', 'Recorded', 'State', 'County']  # File header name
         self.delta = delta

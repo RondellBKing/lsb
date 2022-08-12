@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 import drivers
 from helper import is_date
 from scraper import Scraper
-
+import logging
 
 class WebbTx(Scraper):
     def __init__(self, start_date=None, delta=5):
@@ -52,10 +52,12 @@ class WebbTx(Scraper):
         # Additional iframe code
         browser.switch_to.default_content()
         browser.switch_to.frame(browser.find_element_by_name('bodyframe'))
-        browser.switch_to.frame(browser.find_element_by_name('resultFrame'))
-        browser.switch_to.frame(browser.find_element_by_name('resultListFrame'))
-
-        html = BeautifulSoup(browser.page_source, 'html.parser')
+        try:
+            browser.switch_to.frame(browser.find_element_by_name('resultFrame'))
+            browser.switch_to.frame(browser.find_element_by_name('resultListFrame'))
+            html = BeautifulSoup(browser.page_source, 'html.parser')
+        except Exception as e:
+            html = []
 
         browser.close()
 
