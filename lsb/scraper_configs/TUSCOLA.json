@@ -1,4 +1,6 @@
-{"Tuscola_MI":
+{
+    "SITE_LINK":"https://countyfusion7.kofiletech.us/countyweb/login.do?countyname=TuscolaMI",
+    "BOT_STEPS":
     [
         {"XPATH": "//*[@id=\"maindiv\"]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td/input","ACTION":"Click", "COMMENTS": "Click Login as Guest"},
 

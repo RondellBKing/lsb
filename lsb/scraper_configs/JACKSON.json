@@ -1,4 +1,6 @@
-{"Jackson_MI":
+{   
+    "SITE_LINK":"https://countyfusion3.kofiletech.us/countyweb/login.do?countyname=Jackson",
+    "BOT_STEPS":
     [
         {"XPATH": "//*[@id=\"maindiv\"]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td/input","ACTION":"Click", "COMMENTS": "Click Login as Guest"},
 
@@ -17,5 +19,5 @@
         {"ACTION": "ParentIframe"},
         {"XPATH": "//*[@id=\"imgSearch\"]", "ACTION":"Click", "COMMENTS": "Click Search Button"}
 
-    ]
+    ]   
 }

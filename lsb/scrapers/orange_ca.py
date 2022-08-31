@@ -16,24 +16,27 @@ class OrangeCA(Scraper):
         self.county_name = "orange_ca"
 
     def scrape(self):
-        browser = drivers.create_driver('https://cr.ocgov.com/recorderworks/#tabs-nohdr-4') # By Pass document type search
-        
-        # Click Fed Tax Lien
-        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="tblDocTypesChk"]/tbody/tr[200]/td[2]'))).click()
-        # Click Notice of Fed Lien
-        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="tblDocTypesChk"]/tbody/tr[278]/td[2]'))).click()
-        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="MainContent_MainMenu1_SearchByDocType1_FromDate"]'))).send_keys(self.end_date)
-        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="MainContent_MainMenu1_SearchByDocType1_ToDate"]'))).send_keys(self.start_date)
-        
-        
-        # Click Search Button
-        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="MainContent_MainMenu1_SearchByDocType1_btnSearch"]'))).click()
-        
-        time.sleep(5)
+        try:
+            browser = drivers.create_driver('https://cr.ocgov.com/recorderworks/#tabs-nohdr-4') # By Pass document type search
+            
+            # Click Fed Tax Lien
+            WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="tblDocTypesChk"]/tbody/tr[200]/td[2]'))).click()
+            # Click Notice of Fed Lien
+            WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="tblDocTypesChk"]/tbody/tr[278]/td[2]'))).click()
+            WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="MainContent_MainMenu1_SearchByDocType1_FromDate"]'))).send_keys(self.end_date)
+            WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="MainContent_MainMenu1_SearchByDocType1_ToDate"]'))).send_keys(self.start_date)
+            
+            
+            # Click Search Button
+            WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="MainContent_MainMenu1_SearchByDocType1_btnSearch"]'))).click()
+            
+            time.sleep(5)
 
-        html = browser.page_source
-        tbl_html = BeautifulSoup(html, 'html.parser').find_all('td', id="docTypeGrtGrtee")
-
+            html = browser.page_source
+            tbl_html = BeautifulSoup(html, 'html.parser').find_all('td', id="docTypeGrtGrtee")
+        except Exception as e:
+            tbl_html = []
+            
         browser.close()
 
         return tbl_html

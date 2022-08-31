@@ -1,3 +1,4 @@
+import logging
 from bs4 import BeautifulSoup
 import time
 import os
@@ -17,35 +18,40 @@ class Solano(Scraper):
 
     def scrape(self):
         browser = drivers.create_driver('https://recordersdocumentindex.saccounty.net/#!/disclaimer')
-        time.sleep(5)
+        try:
+            time.sleep(5)
 
-        # Hit Agree
-        browser.find_elements_by_class_name("blue_button")[1].click()
-        time.sleep(5)
+            # Hit Agree
+            browser.find_elements_by_class_name("blue_button")[1].click()
+            time.sleep(5)
 
-        # Fill in Text and Hit Search
-        WebDriverWait(browser, 10).until(
-            EC.element_to_be_clickable((By.NAME, "last-name"))).send_keys('internal revenue service')
-        time.sleep(1)
-        browser.find_elements_by_id("btnSearch")[1].click()  # Now the Search button
+            # Fill in Text and Hit Search
+            WebDriverWait(browser, 10).until(
+                EC.element_to_be_clickable((By.NAME, "last-name"))).send_keys('internal revenue service')
+            time.sleep(1)
+            browser.find_elements_by_id("btnSearch")[1].click()  # Now the Search button
 
-        time.sleep(10)
-        browser.find_element_by_xpath('//*[@id="ul_Less_FC"]/li[1]/div[1]/input').click()  # Click Federal Lien checkbox
-        time.sleep(10)
+            time.sleep(10)
+            browser.find_element_by_xpath('//*[@id="ul_Less_FC"]/li[1]/div[1]/input').click()  # Click Federal Lien checkbox
+            time.sleep(10)
 
-        # Fix to make the drop down clickable
-        button = browser.find_element_by_xpath('//*[@id="spanPageNum"]')
-        browser.execute_script("arguments[0].click();", button)
+            # Fix to make the drop down clickable
+            button = browser.find_element_by_xpath('//*[@id="spanPageNum"]')
+            browser.execute_script("arguments[0].click();", button)
 
-        # 100 page dropdown
-        WebDriverWait(browser, 10).until(EC.element_to_be_clickable((
-                                        By.XPATH, '//*[@id="ddlDocsPerPage"]/ul/li[5]'))).click()
-        time.sleep(5)
+            # 100 page dropdown
+            WebDriverWait(browser, 10).until(EC.element_to_be_clickable((
+                                            By.XPATH, '//*[@id="ddlDocsPerPage"]/ul/li[5]'))).click()
+            time.sleep(5)
 
-        # Extract Table and close page
-        # Todo move to scraper.py and add id parameter
-        html = browser.page_source
-        tbl_html = BeautifulSoup(html, 'html.parser').find('table', id="SearchResultsGrid")
+            # Extract Table and close page
+            # Todo move to scraper.py and add id parameter
+            html = browser.page_source
+            tbl_html = BeautifulSoup(html, 'html.parser').find('table', id="SearchResultsGrid")
+        except Exception as e:
+            logging.info('Failure loading site')
+            tbl_html = []
+            
         browser.close()
 
         return tbl_html

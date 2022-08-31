@@ -6,24 +6,29 @@ import time
 import json
 import os
 import drivers
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
+
 from scraper import Scraper
 
 
 class Tuscola_MI(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "tuscola"
+        self.county_name = "TUSCOLA"
 
     def scrape(self):
-        browser = drivers.create_driver('https://countyfusion7.kofiletech.us/countyweb/login.do?countyname=TuscolaMI') 
         
-        f = open('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers/Tuscola_MI.json')
+        f = open(f'../scraper_configs/{self.county_name}.json')
+        
+        site_json = json.load(f)
+        bot_config = site_json.get('BOT_STEPS')
+        site_link = site_json.get('SITE_LINK')
 
-        bot_config = json.load(f).get('Tuscola_MI')
+        browser = drivers.create_driver(site_link)
+
         try:
             for config_step in bot_config:
                 action = config_step.get('ACTION')

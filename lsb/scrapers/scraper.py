@@ -7,9 +7,16 @@ import glob
 import sys
 from datetime import date, timedelta
 from dateutil.parser import parse
+import json
+import time
+
+from bs4 import BeautifulSoup
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
 
 import pandas as pd
-# import numpy as np
 import tempfile
 
 from send_email import send_mail
@@ -151,15 +158,56 @@ class Scraper(ABC):
 
         return {"file": self.filename, "delta": day_delta, "st_dt": self.start_date, "end_dt": self.end_date}
 
-    @abstractmethod
+    # @abstractmethod
     def scrape(self):
         """
-        Connects to site simulates search and fetch html
+        Parses config file and automates the site steps to prep table html.
         :return:
         """
-        print(self.start_date)
-        print(self.end_date)
-        self.tbl_html = 'results'
+        f = open(f'../scraper_configs/{self.county_name}.json')
+        
+        site_json = json.load(f)
+        bot_config = site_json.get('BOT_STEPS')
+        site_link = site_json.get('SITE_LINK')
+
+        browser = drivers.create_driver(site_link)
+
+        try:
+            for config_step in bot_config:
+                action = config_step.get('ACTION')
+                xpath = config_step.get('XPATH')
+                logging.info(f'Executing {action} on {xpath}')
+                if action == 'Click':
+                    WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
+                elif action == 'Iframe':
+                    time.sleep(5)
+                    browser.switch_to.frame(browser.find_element_by_xpath(xpath))
+                elif action == 'ParentIframe':
+                    browser.switch_to.parent_frame()
+                elif action == 'Input':
+                    text = config_step.get('TEXT')
+                    if text == 'END_DATE':
+                        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).send_keys(self.end_date)
+                    elif text == 'ST_DATE':
+                        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).send_keys(self.start_date)
+                    else:
+                        WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).send_keys(text)
+                
+            browser.switch_to.default_content()
+            browser.switch_to.frame(browser.find_element_by_name('bodyframe'))
+            browser.switch_to.frame(browser.find_element_by_name('resultFrame'))
+            browser.switch_to.frame(browser.find_element_by_name('resultListFrame'))
+
+            html = BeautifulSoup(browser.page_source, 'html.parser')
+        
+            tbl_html = html.find('table', {'class': 'datagrid-btable'})
+        except Exception as e:
+            logging.info(f'Site automation failed - {e}')
+            tbl_html = []
+
+        browser.close()
+
+        return tbl_html # List of tables for Maryland 
 
     @abstractmethod
     def parse_table(self, tbl_html):
