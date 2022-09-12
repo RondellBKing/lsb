@@ -3,10 +3,10 @@ import os
 
 from scraper import Scraper
 
-class Jackson(Scraper):
+class PLACER_CA(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "JACKSON"
+        self.county_name = "PLACER_CA"
 
     def parse_table(self, tbl_html):
         lead_list = []
@@ -27,4 +27,4 @@ class Jackson(Scraper):
 
 if __name__ == '__main__':
     os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
-    Jackson(delta=5).run(send_mail=True)
+    PLACER_CA(delta=5).run(send_mail=True)

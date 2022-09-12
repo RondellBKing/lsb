@@ -1,5 +1,4 @@
 import logging
-
 import os
 
 from selenium.webdriver.common.by import By
@@ -11,8 +10,7 @@ from scraper import Scraper
 class Jackson(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "JACKSON" # Change the name here to match the config you are testing
-
+        self.county_name = "JACKSON" 
     def parse_table(self, tbl_html):
         lead_list = []
         rows = tbl_html.findAll("tr")

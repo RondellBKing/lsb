@@ -67,7 +67,7 @@ class Solano(Scraper):
                 lien_date = row.findChildren(['td'])[1].getText().strip()
 
                 # Strip out the (E) completely and trim the string of (R) if it exist
-                lead = row.findChildren(['td'])[3].text.split('(E)')[0].split('(R)')[-1].strip()
+                lead = row.findChildren(['td'])[3].text.split('(R) INTERNAL REVENUE SERVICE')[1].split('(E)')[1]
 
                 if lead:
                     lead_list.append([lien_date, lead, 'LSB', 'CA', 'Sacramento'])

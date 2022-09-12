@@ -66,6 +66,7 @@ class Scraper(ABC):
             logging.info(f'No Results found for {self.start_date}')
             print(f'No Results found for {self.start_date}')
 
+    # Todo move to upload and email to its own file
     def upload_data_and_alert(self):
         """
         Check google drive and compare feeds
