@@ -3,10 +3,10 @@ import os
 
 from scraper import Scraper
 
-class PLACER_CA(Scraper):
+class Shiawassee(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "PLACER_CA"
+        self.county_name = "Shiawassee_MI"
 
     def parse_table(self, tbl_html):
         lead_list = []
@@ -14,7 +14,7 @@ class PLACER_CA(Scraper):
 
         for row in rows:
             try:
-                lead = row.findChildren(['td'])[4].getText().strip()
+                lead = row.findChildren(['td'])[5].getText().strip()
                 if lead != 'E':
                     lien_date = row.findChildren(['td'])[8].getText().strip()
                     lead_list.append([lien_date, lead, 'LSB', 'MI', self.county_name])
@@ -26,4 +26,4 @@ class PLACER_CA(Scraper):
 
 
 if __name__ == '__main__':
-    PLACER_CA(delta=5).run(send_mail=True)
+    Shiawassee(delta=5).run(send_mail=True)

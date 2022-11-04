@@ -1,20 +1,25 @@
 import logging
 import os
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+
 from scraper import Scraper
 
-class PLACER_CA(Scraper):
+
+class Lenawee_MI(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "PLACER_CA"
-
+        self.county_name = "Lenawee_MI"
     def parse_table(self, tbl_html):
         lead_list = []
         rows = tbl_html.findAll("tr")
 
         for row in rows:
             try:
-                lead = row.findChildren(['td'])[4].getText().strip()
+                lead = row.findChildren(['td'])[6].getText().strip()
+                if lead == 'FEDERAL TAX LIEN':
+                    continue
                 if lead != 'E':
                     lien_date = row.findChildren(['td'])[8].getText().strip()
                     lead_list.append([lien_date, lead, 'LSB', 'MI', self.county_name])
@@ -26,4 +31,4 @@ class PLACER_CA(Scraper):
 
 
 if __name__ == '__main__':
-    PLACER_CA(delta=5).run(send_mail=True)
+    Lenawee_MI(delta=5).run(send_mail=True)

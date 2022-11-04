@@ -37,8 +37,8 @@ class Tuscola_MI(Scraper):
                 if action == 'Click':
                     WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
                 elif action == 'Iframe':
-                    time.sleep(5)
                     browser.switch_to.frame(browser.find_element_by_xpath(xpath))
+                    time.sleep(5)
                 elif action == 'ParentIframe':
                     browser.switch_to.parent_frame()
                 elif action == 'Input':
@@ -84,5 +84,4 @@ class Tuscola_MI(Scraper):
 
 
 if __name__ == '__main__':
-    os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
     Tuscola_MI(delta=5).run(send_mail=True)

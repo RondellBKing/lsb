@@ -29,9 +29,10 @@ def create_g_auth():
     return GoogleDrive(gauth)
 
 if __name__ == '__main__':
+    # For Testing 
     drive = create_g_auth()
     gfile = drive.CreateFile({'parents': [{'id': '1TrIpVdx9JCD_hungVPweQGfcDkJDB5dh'}]})
     gfile['title'] = 'test.csv'
-    gfile.SetContentFile('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers/test.csv')
+    gfile.SetContentFile('test.csv')
 
     gfile.Upload()

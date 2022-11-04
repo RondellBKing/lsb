@@ -74,5 +74,4 @@ class AdamsCounty(Scraper):
 
 
 if __name__ == "__main__":
-    os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
     AdamsCounty(delta=0).run(send_mail=True) # Uses last 7 day button

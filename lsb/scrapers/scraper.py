@@ -193,7 +193,8 @@ class Scraper(ABC):
                         WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).send_keys(self.start_date)
                     else:
                         WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).send_keys(text)
-                
+            
+            # Move this to seperate function
             browser.switch_to.default_content()
             browser.switch_to.frame(browser.find_element_by_name('bodyframe'))
             browser.switch_to.frame(browser.find_element_by_name('resultFrame'))

@@ -71,5 +71,4 @@ class KingCounty(Scraper):
 
 
 if __name__ == "__main__":
-    os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
     KingCounty(delta=0).run(send_mail=True)

@@ -13,8 +13,8 @@
         {"XPATH": "//*[@id=\"_easyui_tree_23\"]/span[5]","ACTION":"Click", "COMMENTS": "Check Federal Lien "},
 
         {"ACTION": "Iframe","XPATH":"//*[@id=\"criteriaframe\"]", "COMMENTS": "hidden iframe click"},
-        {"ACTION": "Input","TEXT":"ST_DATE","XPATH":"//*[@id=\"elemDateRange\"]/table/tbody/tr/td[2]/table/tbody/tr/td[1]/span/input[1]", "COMMENTS": "Start Date"},
-        {"ACTION": "Input","TEXT":"END_DATE","XPATH":"//*[@id=\"elemDateRange\"]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/span/input[1]", "COMMENTS": "End Date"},
+        {"ACTION": "Input","TEXT":"END_DATE","XPATH":"//*[@id=\"elemDateRange\"]/table/tbody/tr/td[2]/table/tbody/tr/td[1]/span/input[1]", "COMMENTS": "Start Date"},
+        {"ACTION": "Input","TEXT":"ST_DATE","XPATH":"//*[@id=\"elemDateRange\"]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/span/input[1]", "COMMENTS": "End Date"},
 
         {"ACTION": "ParentIframe"},
         {"XPATH": "//*[@id=\"imgSearch\"]", "ACTION":"Click", "COMMENTS": "Click Search Button"}

@@ -36,6 +36,7 @@ def get_service():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
+                # TODO Change to relative file path
                 '/Users/rondellking/PycharmProjects/lsb/lsb/scrapers/client_secrets.json', SCOPES)
             creds = flow.run_local_server(port=8080)
         # Save the credentials for the next run

@@ -72,5 +72,4 @@ class DonAna(Scraper):
 
 
 if __name__ == '__main__':
-    os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
     DonAna(delta=20).run(send_mail=True)

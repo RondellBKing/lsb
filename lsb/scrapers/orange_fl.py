@@ -67,5 +67,4 @@ class OrangeFL(Scraper):
 
 
 if __name__ == '__main__':
-    os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
     OrangeFL(delta=5).run(send_mail=True)
