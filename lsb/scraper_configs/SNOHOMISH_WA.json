@@ -1,0 +1,16 @@
+{    
+    "SITE_LINK":"https://www.snoco.org/recordeddocuments",
+    "BODYFRAME":null,
+    "BOT_STEPS":
+    [
+        {"XPATH": "//*[@id=\"bodySection\"]/div/div/div[2]/div/div[2]/a/img","ACTION":"Click", "COMMENTS": "Click Document"},
+
+        {"XPATH": "//*[@id=\"idAcceptYes\"]","ACTION":"Click", "COMMENTS": "Click Accept"},
+
+        {"ACTION": "Input","TEXT":"FED-TXLIEN","XPATH":"//*[@id=\"documentType-DocumentType\"]", "COMMENTS": "Document type"},
+
+        {"ACTION": "Click", "XPATH":"//*[@id=\"beginYesterday-DocumentType\"]", "COMMENTS": "Click yesterday"},
+
+        {"ID": "submit-DocumentType", "ACTION":"Click", "COMMENTS": "Click Search Button"}
+    ]
+}

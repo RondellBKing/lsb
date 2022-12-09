@@ -1,5 +1,4 @@
 import time
-import os
 from bs4 import BeautifulSoup
 
 # Selenium packages used to simulate web experience
@@ -20,8 +19,8 @@ class KingCounty(Scraper):
     def scrape(self):
         # Options used to attempt to scrape site with element not interactable exception
         options = webdriver.ChromeOptions()
-        options.add_argument("start-maximized")
-        options.add_argument("--disable-extensions")
+        # options.add_argument("start-maximized")
+        # options.add_argument("--disable-extensions")
 
         page_url = 'https://recordsearch.kingcounty.gov/LandmarkWeb/search/index?theme=.blue&section=searchCriteriaLegal&quickSearchSelection='
         driver = drivers.create_driver(page_url, options)
