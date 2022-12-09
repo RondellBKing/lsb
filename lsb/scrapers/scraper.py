@@ -46,7 +46,6 @@ class Scraper(ABC):
         self.header = ['LienDate', 'Taxpayer', 'Recorded', 'State', 'County']  # File header name
         self.delta = delta
 
-        os.chdir('/Users/rondellking/PycharmProjects/lsb/lsb/scrapers')
 
     # Main Scraper Flow
     def run(self, send_mail=True):
@@ -119,8 +118,8 @@ class Scraper(ABC):
                 send_mail(self.email_recipients, subject, email_message)
             
             # Load to mongo, only for select counties during beta
-            if self.county_name in ['king_county','harris_county']:
-                self.store_feed(leads_df)
+            # if self.county_name in ['king_county','harris_county']:
+            #     self.store_feed(leads_df)
 
         else:
             logging.info('Feed is the same as previous, ending without sending to drive')
