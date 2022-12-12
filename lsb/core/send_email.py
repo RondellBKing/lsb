@@ -2,6 +2,7 @@ import base64
 import logging
 import os
 import os.path
+from pathlib import Path
 import pickle
 from email.mime.text import MIMEText
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -35,10 +36,12 @@ def get_service():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                # TODO Change to relative file path
-                '/Users/rondellking/PycharmProjects/lsb/lsb/scrapers/client_secrets.json', SCOPES)
+            parent_dir = os.fspath(Path(__file__).resolve().parents[1].resolve()) # Relative to point of execution
+            secret_loc = os.path.join(parent_dir, 'local', 'client_secrets.json')
+
+            flow = InstalledAppFlow.from_client_secrets_file(secret_loc, SCOPES)
             creds = flow.run_local_server(port=8080)
+
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
@@ -87,10 +90,6 @@ def create_message(sender, to, subject, message_text):
   return {'raw': b.decode('utf-8')}
 
 def send_mail(recipient, subject, message, sender="kingstack08@gmail.com"):
-  logging.basicConfig(
-      format="[%(levelname)s] %(message)s",
-      level=logging.INFO
-  )
 
   try:
       service = get_service()

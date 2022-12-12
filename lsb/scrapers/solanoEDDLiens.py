@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup
 import time
 import os
-import drivers
+import core.drivers as drivers
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from scraper import Scraper
+from core.scraper import Scraper
 
 
 class Solano(Scraper):
@@ -75,6 +75,3 @@ class Solano(Scraper):
 
         return lead_list
 
-
-if __name__ == '__main__':
-    Solano(delta=5).run(send_mail=True)

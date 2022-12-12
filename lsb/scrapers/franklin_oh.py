@@ -7,8 +7,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-import drivers
-from scraper import Scraper
+import core.drivers as drivers
+from core.scraper import Scraper
 
 
 class FranklinOh(Scraper):

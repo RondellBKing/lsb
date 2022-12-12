@@ -2,7 +2,8 @@ from selenium import webdriver
 from pathlib import Path
 from pymongo import MongoClient
 import os
-from g_auth import create_g_auth
+
+from core.g_auth import create_g_auth
 
 #See https://developers.google.com/identity
 # 720-835-2283 - 

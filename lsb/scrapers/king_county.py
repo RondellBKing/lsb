@@ -7,8 +7,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 
-import drivers
-from scraper import Scraper  # Base class implementation
+from core.scraper import Scraper  # Base class implementation
+from core import drivers
 
 
 class KingCounty(Scraper):
@@ -23,7 +23,7 @@ class KingCounty(Scraper):
         # options.add_argument("--disable-extensions")
 
         page_url = 'https://recordsearch.kingcounty.gov/LandmarkWeb/search/index?theme=.blue&section=searchCriteriaLegal&quickSearchSelection='
-        driver = drivers.create_driver(page_url, options)
+        driver = drivers.create_driver(page_url)
 
         # Fill out dates
 
@@ -67,7 +67,3 @@ class KingCounty(Scraper):
                 pass
 
         return lead_list
-
-
-if __name__ == "__main__":
-    KingCounty(delta=0).run(send_mail=True)

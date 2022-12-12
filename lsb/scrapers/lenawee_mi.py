@@ -4,13 +4,14 @@ import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from scraper import Scraper
+from core.scraper import Scraper
 
 
 class Lenawee_MI(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
         self.county_name = "Lenawee_MI"
+
     def parse_table(self, tbl_html):
         lead_list = []
         rows = tbl_html.findAll("tr")

@@ -1,17 +1,32 @@
 import logging
 import time
+import os
+import sys
+ 
+# current = os.path.dirname(os.path.realpath(__file__))
+ 
+# # Getting the parent directory name
+# # where the current directory is present.
+# parent = os.path.dirname(current)
+ 
+# # adding the parent directory to
+# # the sys.path.
+# print(os.path.join(parent, 'core'))
+# sys.path.append(os.path.join(parent, 'core'))
+ 
 
 from bs4 import BeautifulSoup
-import drivers
+
 
 # Selenium packages used to simulate web experience
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from scraper import Scraper  # Base class implementation
+from core.scraper import Scraper  # Base class implementation
+from core import drivers
 
-logging.basicConfig(filename='harris.log', level=logging.INFO)
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -19,6 +34,7 @@ class HarrisCounty(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
         self.county_name = "harris_county"
+        logging.basicConfig(filename=f'{self.county_name}.log', level=logging.INFO)
 
     def scrape(self):
         # Testing Move to own file
@@ -30,7 +46,7 @@ class HarrisCounty(Scraper):
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "ctl00$ContentPlaceHolder1$txtFrom"))).send_keys(self.end_date)
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "ctl00$ContentPlaceHolder1$txtTo"))).send_keys(self.start_date)
         WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "ctl00$ContentPlaceHolder1$btnSearch"))).click()
-        time.sleep(10)
+        time.sleep(5)
 
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
@@ -82,4 +98,4 @@ class HarrisCounty(Scraper):
 
 
 if __name__ == "__main__":
-    HarrisCounty(delta=10).run(send_mail=True)
+    HarrisCounty(delta=10).run(send_mail=False)

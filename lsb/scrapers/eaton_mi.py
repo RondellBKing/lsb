@@ -1,16 +1,16 @@
 import logging
-import os
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from scraper import Scraper
+from core.scraper import Scraper
 
 
 class Eaton_MI(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
         self.county_name = "Eaton_MI"
+
     def parse_table(self, tbl_html):
         lead_list = []
         rows = tbl_html.findAll("tr")
@@ -28,7 +28,3 @@ class Eaton_MI(Scraper):
                 pass
 
         return lead_list
-
-
-if __name__ == '__main__':
-    Eaton_MI(delta=5).run(send_mail=True)

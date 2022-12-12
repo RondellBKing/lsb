@@ -1,7 +1,7 @@
 import logging
 import os
 
-from scraper import Scraper
+from core.scraper import Scraper
 
 class PLACER_CA(Scraper):
     def __init__(self, start_date=None, delta=5):
@@ -23,7 +23,3 @@ class PLACER_CA(Scraper):
                 pass
 
         return lead_list
-
-
-if __name__ == '__main__':
-    PLACER_CA(delta=5).run(send_mail=True)

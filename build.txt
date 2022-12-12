@@ -1,0 +1,4 @@
+REM How to install py environment
+conda create --name lsb --file rbot_conda_env.yml
+
+pip install .

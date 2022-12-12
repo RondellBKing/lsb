@@ -1,7 +1,6 @@
 import logging
-import os
 
-from scraper import Scraper
+from core.scraper import Scraper
 
 class Shiawassee(Scraper):
     def __init__(self, start_date=None, delta=5):
@@ -23,7 +22,3 @@ class Shiawassee(Scraper):
                 pass
 
         return lead_list
-
-
-if __name__ == '__main__':
-    Shiawassee(delta=5).run(send_mail=True)

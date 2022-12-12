@@ -1,25 +1,15 @@
 # Base Class for the web scrapers. Web scrapers inherit this class and implement scrape + parse_table.
 
-from abc import ABC, abstractmethod
 import logging
 import os
-import glob
-import sys
-from datetime import date, timedelta
-from dateutil.parser import parse
+from pathlib import Path 
 import json
-import time
 
 from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-
-import pandas as pd
-import tempfile
-
-from send_email import send_mail
 import drivers
 
 from scraper import Scraper
@@ -29,22 +19,24 @@ logging.basicConfig(level=logging.INFO)
 
 
 class Cofile(Scraper):
+    def __init__(self, start_date=None, delta=5):
+        super().__init__(start_date, delta)
+        self.bodyframe = True # Some sights in cofile have an extra body frame step at the end
 
 
-    # @abstractmethod
     def scrape(self):
         """
         Parses config file and automates the site steps to prep table html.
         :return:
         """
-        f = open(f'../scraper_configs/{self.county_name}.json')
-        # f = open(f'lsb/scraper_configs/{self.county_name}.json')
-        # Load Json from script and execute steps from config
+        # Todo Move to load json function
+        config_path = os.fspath(Path(__file__).resolve().parents[1].resolve()) # Relative to point of execution
+        f = open(os.path.join(config_path, 'scraper_configs', f'{self.county_name}.json'))
+
         site_json = json.load(f)
 
         bot_config = site_json.get('BOT_STEPS')
         site_link = site_json.get('SITE_LINK')
-        bodyframe = site_json.get('BODYFRAME', True)
 
         browser = drivers.create_driver(site_link)
 
@@ -53,7 +45,7 @@ class Cofile(Scraper):
             for config_step in bot_config:
                 self.process_action(browser, config_step)
             
-            if bodyframe:
+            if self.bodyframe:
                 # Move this to seperate function
                 browser.switch_to.default_content()
                 browser.switch_to.frame(browser.find_element_by_name('bodyframe'))
@@ -67,14 +59,7 @@ class Cofile(Scraper):
             logging.info(f'Site automation failed - {e}')
             tbl_html = []
 
+        logging.info(f'Site automation Successful - {e}')
         browser.close()
 
-        return tbl_html # List of tables for Maryland 
-    
-    # @abstractmethod
-    # def parse_table(self, tbl_html):
-    #     """
-    #     Parse html table and extract pertinent lead data
-    #     :return:
-    #     """
-    #     return []
+        return tbl_html

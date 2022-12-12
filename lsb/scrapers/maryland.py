@@ -1,13 +1,12 @@
 from bs4 import BeautifulSoup
-import pandas as pd
 import time
-import os
-import drivers
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
-from scraper import Scraper
+
+import core.drivers as drivers
+from core.scraper import Scraper
 
 
 class Maryland(Scraper):
@@ -50,7 +49,7 @@ class Maryland(Scraper):
 
         browser.close()
 
-        return tables # List of tables for Maryland 
+        return tables
 
     def parse_table(self, tbl_html):
 
@@ -89,7 +88,3 @@ class Maryland(Scraper):
                 print(e)
 
         return lead_list
-
-
-if __name__ == '__main__':
-    Maryland(delta=5).run(send_mail=True)

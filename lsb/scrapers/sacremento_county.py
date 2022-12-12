@@ -7,11 +7,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 # Local imports
-import drivers
-from scraper import Scraper
+import core.drivers as drivers
+from core.scraper import Scraper
 
 
-class Solano(Scraper):
+class Sacremento(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
         self.county_name = "sacremento"
@@ -77,4 +77,4 @@ class Solano(Scraper):
 
 
 if __name__ == '__main__':
-    Solano(delta=0).run(send_mail=True)
+    Sacremento(delta=0).run(send_mail=True)

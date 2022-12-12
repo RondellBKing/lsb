@@ -2,12 +2,12 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 import os
-import drivers
+import core.drivers as drivers
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
-from scraper import Scraper
+from core.scraper import Scraper
 
 
 class OrangeCA(Scraper):

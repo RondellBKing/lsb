@@ -1,12 +1,11 @@
 import logging
-import os
+from core.scraper import Scraper
 
-from scraper import Scraper
-
+''' USE This script to test new configs before creating a scraper file'''
 class Tester(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "JACKSON"
+        self.county_name = "JACKSON_MI"
 
     def parse_table(self, tbl_html):
         lead_list = []
@@ -23,7 +22,3 @@ class Tester(Scraper):
                 pass
 
         return lead_list
-
-
-if __name__ == '__main__':
-    Tester(delta=5).run(send_mail=True)

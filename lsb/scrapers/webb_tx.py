@@ -6,9 +6,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-import drivers
-from helper import is_date
-from scraper import Scraper
+import core.drivers as drivers
+from core.helper import is_date
+from core.scraper import Scraper
 import logging
 
 class WebbTx(Scraper):

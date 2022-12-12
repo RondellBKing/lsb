@@ -112,4 +112,4 @@ dependencies:
     - seaborn==0.12.1
     - uritemplate==3.0.1
 #prefix: /Users/rondellking/.conda/envs/rbot
-
+# $ conda create --name <env> --file <this file>

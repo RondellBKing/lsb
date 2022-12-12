@@ -1,7 +1,6 @@
 import logging
-import os
 
-from scraper import Scraper
+from core.scraper import Scraper
 
 class SNOHOMISH_WA(Scraper):
     def __init__(self, start_date=None, delta=5):
@@ -23,7 +22,3 @@ class SNOHOMISH_WA(Scraper):
                 pass
 
         return lead_list
-
-
-if __name__ == '__main__':
-    SNOHOMISH_WA(delta=5).run(send_mail=True)

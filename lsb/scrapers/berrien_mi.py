@@ -1,10 +1,9 @@
 import logging
-import os
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from scraper import Scraper
+from core.scraper import Scraper
 
 
 class Berrien_MI(Scraper):
@@ -28,7 +27,3 @@ class Berrien_MI(Scraper):
                 pass
 
         return lead_list
-
-
-if __name__ == '__main__':
-    Berrien_MI(delta=5).run(send_mail=True)

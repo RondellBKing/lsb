@@ -1,12 +1,13 @@
 import logging
 
-from scraper import Scraper
+from core.scraper import Scraper
 
 
 class JacksonMI(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)
-        self.county_name = "JACKSON_MI" 
+        self.county_name = "JACKSON_MI"
+
     def parse_table(self, tbl_html):
         lead_list = []
         rows = tbl_html.findAll("tr")
@@ -24,7 +25,3 @@ class JacksonMI(Scraper):
                 pass
 
         return lead_list
-
-
-if __name__ == '__main__':
-    JacksonMI(delta=5).run(send_mail=True)
