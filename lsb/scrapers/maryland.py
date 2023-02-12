@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 import core.drivers as drivers
 from core.scraper import Scraper
 
-
+# Todo when column says released filter 
 class Maryland(Scraper):
     def __init__(self, start_date=None, delta=5):
         super().__init__(start_date, delta)

@@ -3,6 +3,7 @@ import os
 import logging
 import glob
 import pandas as pd
+import numpy as np
 from dateutil.parser import parse
 
 """ User defined Helper functions. Temporary Location."""
@@ -41,6 +42,7 @@ def is_new_feed(lead_list, temp_dir, county_name, columns):
     Send Email
     :return:
     """
+    is_new = True
 
     # Compare latest existing feed, only create a new one if there are differences.
     list_of_files = glob.glob(f'{temp_dir}/{county_name}*')
@@ -48,18 +50,30 @@ def is_new_feed(lead_list, temp_dir, county_name, columns):
         latest_file = max(list_of_files, key=os.path.getmtime)
         logging.info(f'Latest feed found -> {latest_file}')
 
-        # Create Dataframe from the previous lead source and the new
-        latest_data_feed_df = pd.read_csv(latest_file, index_col=False)
+        # Create Dataframe from the previous lead file stored
+        prev_leads_df = pd.read_csv(latest_file, index_col=False)
     else:
         logging.info(f'There is no existing feed for this county')
-        latest_data_feed_df = pd.DataFrame()
+        prev_leads_df = pd.DataFrame()
 
-    leads_df = pd.DataFrame(lead_list, columns=columns)
+    new_leads_df = pd.DataFrame(lead_list, columns=columns)
 
-    new_lead_count = len(leads_df)
-    prev_lead_count = len(latest_data_feed_df)
+    new_lead_count = len(new_leads_df)
+    prev_lead_count = len(prev_leads_df)
 
-    logging.info(f'Found {new_lead_count} in latest pull compared to {prev_lead_count} in previous feed')
+    logging.info(f'Found {new_lead_count} in the current pull compared to {prev_lead_count} in previous feed')
+
+    if new_leads_df.equals(prev_leads_df):
+        is_new = False
+    # Check if every record in the existing leads feed exist in the old if they do, ignore results
+    # False alert occurs when the old leads have fallen off since the results will not match.
+    elif new_lead_count < prev_lead_count: 
+        compare_df = pd.merge(prev_leads_df ,new_leads_df, on=['LienDate','Taxpayer'], how='left', indicator='Exist')
+        compare_df['New_Record'] = compare_df['Exist'] = np.where(compare_df.Exist == 'right_only', True, False)
+
+        if compare_df.New_Record.sum() == 0:
+            logging.info('New Feed has leads that have fallen out of current date range')
+            is_new = False
 
     # If the two feeds are equal return False
-    return not leads_df.equals(latest_data_feed_df), leads_df 
+    return is_new, new_leads_df 
