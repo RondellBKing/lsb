@@ -17,19 +17,27 @@ def g_drive(file_location, drive_folder_id):
 
     gfile.Upload()
 
-def create_driver(url):
-    op = webdriver.ChromeOptions()
-    op.add_argument('headless')
+def create_driver(url, browser = 'chrome'):
 
-    # Chrome driver should be stored one level above the scrapers driver
-    path = os.fspath(Path(__file__).resolve().parents[3].resolve())
-    chrome_driver_exe = os.path.join(path,'chromedriver')
-    login_driver = webdriver.Chrome(executable_path=chrome_driver_exe) # '/Users/rondellbking/Desktop/Things/lsb'
-    # login_driver = webdriver.Chrome(executable_path='/Users/rondellbking/Desktop/Things/chromedriver')
+    if browser.lower() == 'chrome':
+
+        op = webdriver.ChromeOptions()
+        op.add_argument('headless')
+
+        # Chrome driver should be stored one level above the scrapers driver
+        path = os.fspath(Path(__file__).resolve().parents[3].resolve())
+        chrome_driver_exe = os.path.join(path,'chromedriver')
+        login_driver = webdriver.Chrome(executable_path=chrome_driver_exe)
+        # login_driver = webdriver.Chrome(executable_path='/Users/rondellbking/Desktop/Things/chromedriver')
+
+        login_driver.maximize_window()
+
+    else: # Sarari if not chrome
+        login_driver = webdriver.Safari()
+        login_driver.implicitly_wait(10) # makes the browser wait if it can't find an element
 
     login_driver.get(url)
-    login_driver.maximize_window()
-
+    
     return login_driver
 
 # Todo Create seperate class for mongo connection and helper functions

@@ -39,7 +39,7 @@ class Scraper(ABC):
         self.temp_dir = os.path.join(self.script_dir, 'temp') # Point of execution will be parent to current dir
         self.filename = ""
         self.county_name = ""
-        self.email_recipients = "kingstack08@gmail.com"  # "ddrummond@blueprint-tax.com, jjereb@blueprint-tax.com"
+        self.email_recipients = "ddrummond@blueprint-tax.com, jjereb@blueprint-tax.com, AutoSquirrels@gmail.com" # kingstack08@gmail.com"  # 
         self.header = ['LienDate', 'Taxpayer', 'Recorded', 'State', 'County']  # File header name
         self.delta = delta
         self.browser = ''
@@ -61,6 +61,11 @@ class Scraper(ABC):
                     logging.info(f"Creating new feed {self.filename}")
                     leads_df.to_csv(self.filename, index=False)
                     new_lead_count = len(leads_df)
+
+                    # biz_words = pd.read_excel('Business Key Words.xlsx')
+                    # biz_words['Keyword'] = biz_words['Keyword'].str.strip()
+
+                    # leads_df.apply(lambda x: np.square(x) if x.name in ['a', 'e', 'g'] else x, axis=1)
 
                     if send_alert:
                         subject = f' {self.county_name} - {new_lead_count} leads found for {self.start_date} - {self.end_date}'

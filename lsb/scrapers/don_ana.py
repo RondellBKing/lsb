@@ -13,7 +13,7 @@ class DonAna(Scraper):
         self.county_name = "don_ana"
 
     def scrape(self):
-        browser = drivers.create_driver('http://records.donaanacounty.org/countyweb/loginDisplay.action?countyname=DonaAna') # By Pass document type search
+        browser = drivers.create_driver('https://records.donaanacounty.org/countyweb/loginDisplay.action?countyname=DonaAna') #, browser = 'safari') # By Pass document type search
         
         # Click Search Public Records
         WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="maindiv"]/table[2]/tbody/tr[1]/td[2]/table/tbody/tr/td/input'))).click()

@@ -1,5 +1,5 @@
 # See https://developers.google.com/identity
-# Generete credentials.json based on client_secrets.kson
+# Generete credentials.json based on client_secrets.son
 # https://console.cloud.google.com/apis/credentials?project=lsb-rbot
 
 from pydrive.auth import GoogleAuth
