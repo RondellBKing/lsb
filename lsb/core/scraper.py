@@ -3,10 +3,10 @@
 from abc import ABC, abstractmethod
 import logging
 import os
-# import glob
 import sys
 from datetime import date, timedelta
 from dateutil.parser import parse
+from pathlib import Path
 import json
 import time
 
@@ -14,15 +14,15 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from pathlib import Path
 
+from pretty_html_table import build_table
 
 import pandas as pd
-# import tempfile
 
 from core.helper import is_new_feed
 from core.send_email import send_mail
 import core.drivers as drivers
+from core.biz_logic import is_business
 
 # logging.basicConfig(filename='scraper.log', level=logging.INFO)
 logging.basicConfig(level=logging.INFO)
@@ -39,7 +39,8 @@ class Scraper(ABC):
         self.temp_dir = os.path.join(self.script_dir, 'temp') # Point of execution will be parent to current dir
         self.filename = ""
         self.county_name = ""
-        self.email_recipients = "ddrummond@blueprint-tax.com, jjereb@blueprint-tax.com, AutoSquirrels@gmail.com" # kingstack08@gmail.com"  # 
+        self.email_recipients = "ddrummond@blueprint-tax.com, jjereb@blueprint-tax.com, AutoSquirrels@gmail.com"    
+        # self.email_recipients = "kingstack08@gmail.com"
         self.header = ['LienDate', 'Taxpayer', 'Recorded', 'State', 'County']  # File header name
         self.delta = delta
         self.browser = ''
@@ -62,17 +63,26 @@ class Scraper(ABC):
                     leads_df.to_csv(self.filename, index=False)
                     new_lead_count = len(leads_df)
 
-                    # biz_words = pd.read_excel('Business Key Words.xlsx')
-                    # biz_words['Keyword'] = biz_words['Keyword'].str.strip()
-
-                    # leads_df.apply(lambda x: np.square(x) if x.name in ['a', 'e', 'g'] else x, axis=1)
-
                     if send_alert:
-                        subject = f' {self.county_name} - {new_lead_count} leads found for {self.start_date} - {self.end_date}'
-                        email_message = f"See https://drive.google.com/drive/folders/1TrIpVdx9JCD_hungVPweQGfcDkJDB5dh?usp=sharing"
+                        leads_df_w_biz = is_business(leads_df)
+                        email_message = """
+                            <html>
+                            <head>
+                            </head>
+
+                            <body>
+                                    {0}
+                                    <br>
+                                    https://drive.google.com/drive/folders/1TrIpVdx9JCD_hungVPweQGfcDkJDB5dh?usp=sharing 
+                            </body>
+
+                            </html>
+                            """.format(build_table(leads_df_w_biz, 'blue_light'))
+                        subject = f' {self.county_name} - {new_lead_count} leads found for {self.end_date} - {self.start_date} '
+                        # email_message = f"See https://drive.google.com/drive/folders/1TrIpVdx9JCD_hungVPweQGfcDkJDB5dh?usp=sharing \n From imac"
                         
                         logging.info('Sending email and uploading feed')
-                        drivers.g_drive(self.filename, '1TrIpVdx9JCD_hungVPweQGfcDkJDB5dh')
+                        # drivers.g_drive(self.filename, '1TrIpVdx9JCD_hungVPweQGfcDkJDB5dh')
 
                         send_mail(self.email_recipients, subject, email_message)
 

@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def is_business(row, text_column = 'Taxpayer'):
-    biz_key_words = pd.read_csv('Business Key Words.csv')
+    biz_key_words = pd.read_csv('/Users/rondellbking/Desktop/Things/lsb/lsb/Business Key Words.csv')
     biz_word_list = biz_key_words['Keyword'].tolist()
     pattern = '|'.join(biz_word_list)
     # leads_df['IsBiz'] = leads_df.Taxpayer.str.contains(pattern, case=False)
@@ -12,7 +12,7 @@ def is_business(row, text_column = 'Taxpayer'):
 
 def is_business(df, text_column = 'Taxpayer'):
     # Prioritized List 
-    biz_key_words = pd.read_csv('Business Key Words.csv')
+    biz_key_words = pd.read_csv('/Users/rondellbking/Desktop/Things/lsb/lsb/Business Key Words.csv')
     biz_word_list = biz_key_words['Keyword'].tolist()
     pattern = '|'.join(biz_word_list)
 

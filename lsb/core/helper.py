@@ -68,8 +68,8 @@ def is_new_feed(lead_list, temp_dir, county_name, columns):
     # Check if every record in the existing leads feed exist in the old if they do, ignore results
     # False alert occurs when the old leads have fallen off since the results will not match.
     elif new_lead_count < prev_lead_count: 
-        compare_df = pd.merge(prev_leads_df ,new_leads_df, on=['LienDate','Taxpayer'], how='left', indicator='Exist')
-        compare_df['New_Record'] = compare_df['Exist'] = np.where(compare_df.Exist == 'right_only', True, False)
+        compare_df = pd.merge(new_leads_df, prev_leads_df, on=['LienDate','Taxpayer'], how='left', indicator='Exist')
+        compare_df['New_Record'] = compare_df['Exist'] = np.where(compare_df.Exist == 'left_only', True, False)
 
         if compare_df.New_Record.sum() == 0:
             logging.info('New Feed has leads that have fallen out of current date range')
