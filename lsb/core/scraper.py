@@ -40,7 +40,8 @@ class Scraper(ABC):
         self.filename = ""
         self.county_name = ""
         self.email_recipients = "ddrummond@blueprint-tax.com, jjereb@blueprint-tax.com, AutoSquirrels@gmail.com"    
-        # self.email_recipients = "kingstack08@gmail.com"
+        # self.email_recipients = "kingstack08@gmail.com",
+        self.sender = "kingstack08@gmail.com"
         self.header = ['LienDate', 'Taxpayer', 'Recorded', 'State', 'County']  # File header name
         self.delta = delta
         self.browser = ''
@@ -79,12 +80,14 @@ class Scraper(ABC):
                             </html>
                             """.format(build_table(leads_df_w_biz, 'blue_light'))
                         subject = f' {self.county_name} - {new_lead_count} leads found for {self.end_date} - {self.start_date} '
-                        # email_message = f"See https://drive.google.com/drive/folders/1TrIpVdx9JCD_hungVPweQGfcDkJDB5dh?usp=sharing \n From imac"
-                        
+
                         logging.info('Sending email and uploading feed')
                         # drivers.g_drive(self.filename, '1TrIpVdx9JCD_hungVPweQGfcDkJDB5dh')
 
-                        send_mail(self.email_recipients, subject, email_message)
+                        send_mail(self.email_recipients, subject, email_message, self.sender,  self.filename)
+                        # Load to mongo, only for select counties during beta
+                        if self.county_name in ['king_county','harris_county','maryland']:
+                            self.store_feed(leads_df)
 
                 else:
                     logging.info('Feed is the same as previous, ending without sending to drive')
@@ -96,7 +99,18 @@ class Scraper(ABC):
         else:
             logging.error(f'Table html not found after scraping {self.start_date}')
 
-    
+    def store_feed(self, lead_df):
+        client = drivers.create_mongo_connection()
+        db = client['scraped_leads']
+        collection = db[self.county_name]
+        lead_dict = lead_df.to_dict("records")
+        try:
+            logging.info("Loading data to mongo db")
+            collection.insert_many(lead_dict)
+            # collection.update_many({ "Taxpayer": { "$exists": True } },lead_dict, upsert=True)
+        except Exception as e:
+            logging.error(f'Failed to load to mongo {e}')
+
     def feed_setup(self):
         day_delta = timedelta(days=self.delta)
 
