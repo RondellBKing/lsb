@@ -5,6 +5,10 @@ import os.path
 from pathlib import Path
 import pickle
 from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email import encoders
+
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient import errors
@@ -69,7 +73,7 @@ def send_message(service, sender, message):
   except errors.HttpError as error:
     logging.error('An HTTP error occurred: %s', error)
 
-def create_message(sender, to, subject, message_text):
+def create_message(sender, to, subject, message_text, attachment=None):
   """Create a message for an email.
 
   Args:
@@ -81,19 +85,48 @@ def create_message(sender, to, subject, message_text):
   Returns:
     An object containing a base64url encoded email object.
   """
-  message = MIMEText(message_text, 'html')
+  message = MIMEMultipart() #MIMEText(message_text, 'html')
+  # attach the body with the msg instance
+  message.attach(MIMEText(message_text, 'html')) 
+
   message['to'] = to
   message['from'] = sender
   message['subject'] = subject
+
   s = message.as_string()
   b = base64.urlsafe_b64encode(s.encode('utf-8'))
-  return {'raw': b.decode('utf-8')}
 
-def send_mail(recipient, subject, message, sender="kingstack08@gmail.com"):
+  myFile=open(attachment, "rb")
+
+  # attach the body with the msg instance
+  # message.attach(MIMEText(b, 'plain'))
+  p = MIMEBase('application', 'octet-stream')
+
+  # To change the payload into encoded form
+  p.set_payload((myFile).read())
+  # encoders.encode_base64(p)
+    
+  p.add_header('Content-Disposition', "attachment; filename= %s" % attachment)
+    
+  # attach the instance 'p' to instance 'msg'
+  # message.attach(b)
+  message.attach(p)
+
+  # raw = encoders.encode_base64(message)
+          # encoded message
+  encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
+
+  create_message = {
+      'raw': encoded_message
+  }
+  # text = message.as_string()
+  return  create_message
+
+def send_mail(recipient, subject, message, sender="kingstack08@gmail.com", filename=None):
 
   try:
       service = get_service()
-      message = create_message(sender, recipient, subject, message)
+      message = create_message(sender, recipient, subject, message, filename)
       send_message(service, sender, message)
 
   except Exception as e:
@@ -101,4 +134,4 @@ def send_mail(recipient, subject, message, sender="kingstack08@gmail.com"):
       raise
 
 if __name__ == '__main__':
-  send_mail("kingstack08@gmail.com","Test subject", "Test body")
+  send_mail("kingstack08@gmail.com","Test subject", "Test body","kingstack08@gmail.com",'/Users/rondellking/PycharmProjects/lsb/lsb-v2/lsb/temp/san_francisco_01162023.csv')
