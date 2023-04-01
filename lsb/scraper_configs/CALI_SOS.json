@@ -1,0 +1,12 @@
+{
+    "SITE_LINK":"https://bizfileonline.sos.ca.gov/search/ucc",
+    "BOT_STEPS":
+    [
+        {"ACTION": "Input","TEXT":"INTERNAL", "XPATH":"//*[@id=\"root\"]/div/div[1]/div/main/div/div[2]/div[1]/input", "COMMENTS": "Search box"},
+        {"ACTION": "Click", "CLASS_NAME":"advanced-search-toggle", "COMMENTS": "Advanced Search"},
+        {"ACTION": "Input","TEXT":"ST_DATE","XPATH":"//*[@id=\"field-date-FILING_DATEe\"]", "COMMENTS": "End Date"},
+        {"ACTION": "Input","TEXT":"END_DATE","XPATH":"//*[@id=\"field-date-FILING_DATEs\"]", "COMMENTS": "Start Date"},
+        {"XPATH": "//*[@id=\"field-RECORD_TYPE_ID\"]/option[5]","ACTION":"Click", "COMMENTS": "Fed tax Lien"},
+        {"ACTION": "Click", "CLASS_NAME":"btn btn-primary btn-raised advanced-search-button", "COMMENTS": "Search"}
+    ]
+}

@@ -167,34 +167,42 @@ class Scraper(ABC):
 
         for config_step in bot_config:
             action = config_step.get('ACTION')
-            xpath = config_step.get('XPATH')
-            
-            logging.info(f'Executing {action} on {xpath}')
+            if config_step.get('XPATH'):
+                action_string = config_step.get('XPATH')
+                action_type = By.XPATH
+            elif config_step.get('CLASS_NAME'):
+                action_string = config_step.get('CLASS_NAME')
+                action_type = By.CLASS_NAME
+
+            logging.info(f'Executing {action} on {action_string}')
+
             if action == 'Click':
-                WebDriverWait(self.browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
+                WebDriverWait(self.browser, 30).until(EC.element_to_be_clickable((action_type, action_string))).click()
             elif action == 'Iframe':
                 time.sleep(5)
-                self.browser.switch_to.frame(self.browser.find_element_by_xpath(xpath))
+                self.browser.switch_to.frame(self.browser.find_element_by_xpath(action_string))
             elif action == 'ParentIframe':
                 self.browser.switch_to.parent_frame()
             elif action == 'Input':
                 text = config_step.get('TEXT')
                 if text == 'END_DATE':
-                    WebDriverWait(self.browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).send_keys(self.end_date)
+                    WebDriverWait(self.browser, 20).until(EC.element_to_be_clickable((action_type, action_string))).send_keys(self.end_date)
                 elif text == 'ST_DATE':
-                    WebDriverWait(self.browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).send_keys(self.start_date)
+                    WebDriverWait(self.browser, 20).until(EC.element_to_be_clickable((action_type, action_string))).send_keys(self.start_date)
                 else:
-                    WebDriverWait(self.browser, 20).until(EC.element_to_be_clickable((By.XPATH, xpath))).send_keys(text)
+                    WebDriverWait(self.browser, 20).until(EC.element_to_be_clickable((action_type, action_string))).send_keys(text)
 
     def fetch_table_html(self):
         '''
         This method is used to extract the table from the results since this is what we are after.
         '''
-
-        self.browser.switch_to.default_content()
-        self.browser.switch_to.frame(self.browser.find_element_by_name('bodyframe'))
-        self.browser.switch_to.frame(self.browser.find_element_by_name('resultFrame'))
-        self.browser.switch_to.frame(self.browser.find_element_by_name('resultListFrame'))
+        try:
+            self.browser.switch_to.default_content()
+            self.browser.switch_to.frame(self.browser.find_element_by_name('bodyframe'))
+            self.browser.switch_to.frame(self.browser.find_element_by_name('resultFrame'))
+            self.browser.switch_to.frame(self.browser.find_element_by_name('resultListFrame'))
+        except Exception as e:
+            logging.warning(f'No Result Frame found - {e}')
 
         html = BeautifulSoup(self.browser.page_source, 'html.parser')
 
