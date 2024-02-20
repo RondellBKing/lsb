@@ -86,8 +86,8 @@ class Scraper(ABC):
 
                         send_mail(self.email_recipients, subject, email_message, self.sender,  self.filename)
                         # Load to mongo, only for select counties during beta
-                        if self.county_name in ['king_county','harris_county','maryland']:
-                            self.store_feed(leads_df)
+                        # if self.county_name in ['king_county','harris_county','maryland']:
+                        #     self.store_feed(leads_df)
 
                 else:
                     logging.info('Feed is the same as previous, ending without sending to drive')

@@ -35,15 +35,15 @@ def get_service():
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
+    # If there are no (valid) credentials available, referesh the tokens.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             parent_dir = os.fspath(Path(__file__).resolve().parents[1].resolve()) # Relative to point of execution
-            secret_loc = os.path.join(parent_dir, 'local', 'client_secrets.json')
+            # secret_loc = os.path.join(parent_dir, 'local', 'client_secrets.json')
 
-            flow = InstalledAppFlow.from_client_secrets_file(secret_loc, SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
             creds = flow.run_local_server(port=8080)
 
         # Save the credentials for the next run
@@ -93,8 +93,8 @@ def create_message(sender, to, subject, message_text, attachment=None):
   message['from'] = sender
   message['subject'] = subject
 
-  s = message.as_string()
-  b = base64.urlsafe_b64encode(s.encode('utf-8'))
+  # s = message.as_string()
+  # b = base64.urlsafe_b64encode(s.encode('utf-8'))
 
   myFile=open(attachment, "rb")
 
@@ -134,4 +134,4 @@ def send_mail(recipient, subject, message, sender="kingstack08@gmail.com", filen
       raise
 
 if __name__ == '__main__':
-  send_mail("kingstack08@gmail.com","Test subject", "Test body","kingstack08@gmail.com",'/Users/rondellking/PycharmProjects/lsb/lsb-v2/lsb/temp/san_francisco_01162023.csv')
+  send_mail("kingstack08@gmail.com","Test subject", "Test body","kingstack08@gmail.com",'/Users/rondellbking/Desktop/Things/lsb/lsb/temp/test.csv')

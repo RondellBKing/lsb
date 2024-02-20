@@ -1,5 +1,5 @@
 # See https://developers.google.com/identity
-# Generete credentials.json based on client_secrets.son
+# Generete credentials.json based on client_secrets.json
 # https://console.cloud.google.com/apis/credentials?project=lsb-rbot
 
 from pydrive.auth import GoogleAuth
@@ -17,10 +17,11 @@ def create_g_auth():
 
     # # don't start path with '/', as this causes it to look relative to the root folder    
     client_json_path = os.path.join(parent_dir, 'local', 'client_secrets.json')
+    credentials_json_path = os.path.join(parent_dir, 'credentials.json')
     GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = client_json_path
 
     # print(secret_loc)
-    gauth.LoadCredentialsFile('credentials.json')
+    gauth.LoadCredentialsFile(credentials_json_path)
 
     if gauth.credentials is None:
         # Authenticate if credentials are missing
